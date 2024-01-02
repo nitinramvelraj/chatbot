@@ -31,6 +31,8 @@ client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
 )
 
+ASSISTANT_ID = os.getenv("OPENAI_ASSISTANT_ID")
+
 # WebSocket Endpoint
 @app.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket, session_id: str = "", email: str = None):
@@ -60,7 +62,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str = "", email: 
             # Run the assistant
             run = client.beta.threads.runs.create(
                 thread_id=thread.id,
-                assistant_id="asst_XeoK4PDQX1PS93vO5w56hSH6",
+                assistant_id=ASSISTANT_ID,
                 instructions="Please provide a response."
             )
 
