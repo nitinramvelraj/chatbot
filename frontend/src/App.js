@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     // Connect to WebSocket server
-    ws.current = new WebSocket('ws://3.128.21.121:443/ws/chat');
+    ws.current = new WebSocket('wss://3.128.21.121:443/ws/chat');
     
     ws.current.onopen = () => console.log("connected to ws");
     ws.current.onclose = (e) => console.log("ws connection closed", e);
