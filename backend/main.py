@@ -33,6 +33,10 @@ client = OpenAI(
 
 ASSISTANT_ID = os.getenv("OPENAI_ASSISTANT_ID")
 
+@app.get("/health")
+def health():
+    return {"message": "Howdy!!!"}
+
 # WebSocket Endpoint
 @app.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket, session_id: str = "", email: str = None):
