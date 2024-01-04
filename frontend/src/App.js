@@ -3,18 +3,20 @@ import './App.css';
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState([]);
   const [input, setInput] = useState('');
   const ws = useRef(null);
 
   useEffect(() => {
     // Connect to WebSocket server
-    ws.current = new WebSocket('wss://3.128.21.121:443/ws/chat');
-    
+    ws.current = new WebSocket('wss://3.128.21.121/ws/chat');
+
     ws.current.onopen = () => console.log("connected to ws");
     ws.current.onclose = (e) => console.log("ws connection closed", e);
 
     ws.current.onmessage = (e) => {
       const message = { message: e.data, sender: 'bot' };
+      setLoading(false);
       setMessages(prevMessages => [...prevMessages, message]);
     };
 
@@ -26,6 +28,7 @@ function App() {
   const sendMessage = (e) => {
     e.preventDefault();
     if (input.trim()) {
+      setLoading(true);
       ws.current.send(JSON.stringify({ message: input }));
       setMessages(prevMessages => [...prevMessages, { message: input, sender: 'user' }]);
       setInput('');
@@ -41,6 +44,7 @@ function App() {
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`}>
             {msg.message}
+            {loading && <div>Waiting for response from bot...</div>}
           </div>
         ))}
       </div>
